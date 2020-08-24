@@ -12,17 +12,24 @@ void setup() {
 }
 
 void loop() {
+  bool flag = false;
+  
   for(int count = 0; count < 256; count++) {
       int temp = count;
       for(int i = lsbPin; i >= 6; i--) {
+        int reading = digitalRead(buttonPin);
+        if(reading == 1) flag = true;
         digitalWrite(i, temp & 1 == 1 ? HIGH : LOW);
         temp = temp >> 1;
       }
-      delay(200);
-      int reading = digitalRead(buttonPin);
-      if(reading == 1) break;
+      if(flag) break;
+      delay(500);
   }
+  
+  flag = false;
   for(int i = lsbPin; i >= 6; i--) {
-    digitalWrite(i, LOW);
+    digitalWrite(i, HIGH);
   }  
+  
+  delay(5000);
 }
